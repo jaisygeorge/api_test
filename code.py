@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import pickle
 import json
 
+import sklearn
 import warnings
 warnings.filterwarnings("ignore")
 
