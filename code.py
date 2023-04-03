@@ -4,9 +4,10 @@ import pickle
 
 import warnings
 warnings.filterwarnings("ignore")
-import tensorflow
-print(tensorflow.__version__)
-#from tensorflow.keras.models import load_model
+#import tensorflow
+import keras
+
+from keras.models import load_model
 
 # load pre-trained model
 #model = load_model('model_Mar29_2')
