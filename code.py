@@ -1,23 +1,48 @@
-import numpy as np
-import pandas as pd
+from fastapi import FastAPI
+from pydantic import BaseModel
 import pickle
+import json
 
 import warnings
 warnings.filterwarnings("ignore")
-#import tensorflow
-import keras
 
-from keras.models import load_model
+app = FastAPI()
 
-# load pre-trained model
-#model = load_model('model_Mar29_2')
-
-# load the scaler and pca objects from disk
-with open('scaler.pkl', 'rb') as f:
-    scaler = pickle.load(f)
-
-with open('pca.pkl', 'rb') as f:
-    pca = pickle.load(f)
+class model_input(BaseModel):
     
-print("Hello World")
+    pregnancies : int
+    Glucose : int
+    BloodPressure : int
+    SkinThickness : int
+    Insulin : int
+    BMI : float
+    DiabetesPedigreeFunction : float
+    Age : int       
+        
+# loading the saved model
+diabetes_model = pickle.load(open('diabetes_model.sav', 'rb'))
+
+@app.post('/diabetes_prediction')
+def diabetes_predd(input_parameters : model_input):
     
+    input_data = input_parameters.json()
+    input_dictionary = json.loads(input_data)
+    
+    preg = input_dictionary['pregnancies']
+    glu = input_dictionary['Glucose']
+    bp = input_dictionary['BloodPressure']
+    skin = input_dictionary['SkinThickness']
+    insulin = input_dictionary['Insulin']
+    bmi = input_dictionary['BMI']
+    dpf = input_dictionary['DiabetesPedigreeFunction']
+    age = input_dictionary['Age']
+    
+    
+    input_list = [preg, glu, bp, skin, insulin, bmi, dpf, age]
+    
+    prediction = diabetes_model.predict([input_list])
+    
+    if (prediction[0] == 0):
+        return 'The person is not diabetic'
+    else:
+        return 'The person is diabetic'
