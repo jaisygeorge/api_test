@@ -4,11 +4,12 @@ import pickle
 
 import warnings
 warnings.filterwarnings("ignore")
-
-from tensorflow.keras.models import load_model
+import tensorflow
+print(tensorflow.__version__)
+#from tensorflow.keras.models import load_model
 
 # load pre-trained model
-model = load_model('model_Mar29_2')
+#model = load_model('model_Mar29_2')
 
 # load the scaler and pca objects from disk
 with open('scaler.pkl', 'rb') as f:
